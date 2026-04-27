@@ -105,9 +105,13 @@
 
       try {
         const response = await fetch(form.action, {
-          method: 'POST',
-          body: new FormData(form),
-          headers: { 'Accept': 'application/json' }
+  method: 'POST',
+  body: new URLSearchParams(new FormData(form)), // Converts data to a standard format
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded'
+  }
+});
+
         });
 
         if (response.ok) {
