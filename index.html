@@ -91,7 +91,7 @@
   </div>
 </div>
 
-<script>
+<script> 
   async function handleForm(formId, buttonId, statusId) {
     const form = document.getElementById(formId);
     const btn = document.getElementById(buttonId);
@@ -100,12 +100,6 @@
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       
-      // Only block if still placeholder
-      if (!form.action.includes("https://forminit.com/f/w0ljqwvp09y")) {
-        alert("CRITICAL ERROR: You forgot to paste your Forminit/Getform endpoint!");
-        return;
-      }
-
       btn.disabled = true;
       btn.innerText = "Sending...";
 
@@ -119,20 +113,61 @@
         if (response.ok) {
           btn.innerText = "Sent";
           status.style.display = "block";
-          // Reset button after 3s
           setTimeout(() => {
             btn.disabled = false;
             btn.innerText = buttonId === 'reqBtn' ? "Request Code" : "Submit & Verify";
           }, 3000);
         } else {
-          alert("Server busy. Please try again.");
+          // This tells you the EXACT error code (e.g., 404, 429, 500)
+          alert("Error " + response.status + ": The form service rejected the request.");
           btn.disabled = false;
           btn.innerText = "Try Again";
         }
       } catch (error) {
-        alert("Connection blocked. Please disable any Ad-Blockers and try again.");
+        alert("Connection blocked. Check your internet or Ad-Blocker.");
+        btn.disabled = false;
+        btn.innerText = "Try Again";  async function handleForm(formId, buttonId, statusId) {
+    const form = document.getElementById(formId);
+    const btn = document.getElementById(buttonId);
+    const status = document.getElementById(statusId);
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      btn.disabled = true;
+      btn.innerText = "Sending...";
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+          btn.innerText = "Sent";
+          status.style.display = "block";
+          setTimeout(() => {
+            btn.disabled = false;
+            btn.innerText = buttonId === 'reqBtn' ? "Request Code" : "Submit & Verify";
+          }, 3000);
+        } else {
+          // This tells you the EXACT error code (e.g., 404, 429, 500)
+          alert("Error " + response.status + ": The form service rejected the request.");
+          btn.disabled = false;
+          btn.innerText = "Try Again";
+        }
+      } catch (error) {
+        alert("Connection blocked. Check your internet or Ad-Blocker.");
         btn.disabled = false;
         btn.innerText = "Try Again";
+      }
+    });
+  }
+
+  handleForm('requestCodeForm', 'reqBtn', 'waitMessage');
+  handleForm('submitCodeForm', 'subBtn', 'successMessage');
+
       }
     });
   }
