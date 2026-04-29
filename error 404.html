@@ -4,46 +4,114 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="favicon.png">
-  <title>404 - Page Not Found</title>
+  <title>Access Interrupted | 404 Error</title>
   <style>
+    :root {
+      --bg-dark: #0f172a;
+      --accent: #3b82f6; /* Modern Blue */
+      --text-muted: #94a3b8;
+      --glass: rgba(30, 41, 59, 0.7);
+    }
+
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #1a1a1a url('background.jpg') no-repeat center center fixed;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg-dark) url('background.jpg') no-repeat center center fixed;
       background-size: cover;
-      color: white;
-      text-align: center;
+      color: #f8fafc;
+      overflow: hidden; /* Clean viewport */
     }
+
     .overlay {
-      background: rgba(0,0,0,0.6);
+      background: radial-gradient(circle at center, rgba(15, 23, 42, 0.2) 0%, rgba(15, 23, 42, 0.9) 100%);
       min-height: 100vh;
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
     }
+
     .container {
-      background: rgba(20,20,20,0.85);
-      padding: 40px;
-      width: 350px;
-      border-radius: 10px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 60px 40px;
+      width: 100%;
+      max-width: 420px;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      text-align: center;
+      transition: transform 0.3s ease;
     }
-    h1 {
-      font-size: 72px;
+
+    .container:hover {
+      transform: translateY(-5px);
+    }
+
+    .error-code {
+      font-size: 84px;
+      font-weight: 800;
+      line-height: 1;
       margin: 0;
-      color: #ff4444;
+      background: linear-gradient(180deg, #ffffff 0%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -2px;
     }
+
+    .divider {
+      width: 40px;
+      height: 2px;
+      background: var(--accent);
+      margin: 24px auto;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 600;
+      margin: 0 0 12px 0;
+      letter-spacing: -0.01em;
+    }
+
     p {
-      font-size: 18px;
-      margin: 20px 0;
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin: 0 0 32px 0;
     }
-    a {
-      color: #007bff;
-      text-decoration: underline;
-      font-weight: bold;
+
+    .btn-home {
+      display: inline-block;
+      background: #ffffff;
+      color: #0f172a;
+      text-decoration: none;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     }
-    a:hover {
-      color: #0056b3;
+
+    .btn-home:hover {
+      background: var(--accent);
+      color: white;
+      transform: scale(1.03);
+      box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.4);
+    }
+
+    .support-link {
+      display: block;
+      margin-top: 24px;
+      font-size: 12px;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .support-link:hover {
+      color: #ffffff;
     }
   </style>
 </head>
@@ -51,9 +119,15 @@
 
 <div class="overlay">
   <div class="container">
-    <h1>404</h1>
-    <p>Something went wrong.</p>
-    <p>Please click <a href="https://abanob015521-max.github.io/">here</a> to try again.</p>
+    <div class="error-code">404</div>
+    <div class="divider"></div>
+    
+    <h2>Access Restricted or Link Broken</h2>
+    <p>We couldn't find the page you're looking for. It may have been moved, deleted, or you might not have the correct permissions.</p>
+    
+    <a href="https://abanob015521-max.github.io/" class="btn-home">Return to Dashboard</a>
+    
+    <a href="#" class="support-link">Contact System Administrator</a>
   </div>
 </div>
 
